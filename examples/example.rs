@@ -14,6 +14,7 @@ fn chau() {
 }
 
 fn main() {
+    // `do_hola`` and `do_chau`` events must satisfy an alternate relation between them
     let alternates: Alternates = Alternates::new("do_hola", "do_chau");
 
     let subscriber = TracingFormal::new(vec![alternates]);
