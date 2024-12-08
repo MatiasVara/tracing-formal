@@ -35,8 +35,15 @@ impl Subscriber for TracingFormal {
         );
         span.record(&mut field_logger);
 
-        // use different ID for different instances
-        // In a real implementation, generate unique IDs
+        // IDs are used to uniquely identify spans and events within
+        // the context of a subscriber, so span equality will be
+        // based on the returned ID. Thus, if the subscriber wishes
+        // for all spans with the same metadata to be considered equal,
+        // it should return the same ID every time it is given a particular set of metadata.
+        // Similarly, if it wishes for two separate instances of a span
+        // with the same metadata to not be equal, it should return a
+        // distinct ID every time this function is called, regardless of the metadata.
+        // for example, in a virtio-devices, same devices should return the same ID
         Id::from_u64(1)
     }
 
@@ -48,8 +55,16 @@ impl Subscriber for TracingFormal {
         // Record a relationship between spans
     }
 
-    fn event(&self, _event: &Event<'_>) {
+    fn event(&self, event: &Event<'_>) {
         // Handle an event
+        let mut field_logger = FieldLogger::new(
+            self,
+            event.metadata().name(),
+            event.metadata().file().unwrap(),
+            event.metadata().line().unwrap(),
+            event.metadata().callsite(),
+        );
+        event.record(&mut field_logger);
     }
 
     fn enter(&self, _span: &Id) {
