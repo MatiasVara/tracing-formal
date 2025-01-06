@@ -10,12 +10,12 @@ struct MyType {
 // impl a type and define events 
 impl MyType {
     #[instrument(fields(event = "do_hola"))]
-    pub fn hola(self) {
+    pub fn hola(&self) {
          println!("hola from {}", self.name);
     }
 
     #[instrument(fields(event = "do_chau"))]
-    pub fn chau(self){
+    pub fn chau(&self){
         println!("chau from {}", self.name);
     }
 }
@@ -32,7 +32,16 @@ fn main() {
     let test = MyType {
         name: "MyTypeInstance"
     };
+
+    /* TODO: to support different instances
+    let test2 = MyType {
+        name: "MyTypeInstance2"
+    };
+    */
     
+    test.hola();
+
+    test.chau();
     // the following line triggers a violation 
     test.chau();
 }
