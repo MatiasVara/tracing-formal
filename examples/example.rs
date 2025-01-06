@@ -1,8 +1,8 @@
 use solver::Alternates;
-use tracing::instrument;
-use tracing_formal::TracingFormal;
 use tracing::event;
+use tracing::instrument;
 use tracing::Level;
+use tracing_formal::TracingFormal;
 
 #[instrument(fields(event = "do_hola"))]
 fn hola() {
@@ -28,7 +28,7 @@ fn main() {
     // just an event as example
     // events provide better granularity
     // fields is used to trigger the `do_hola` event
-    event!(Level::INFO, event="do_hola");
+    event!(Level::INFO, event = "do_hola");
 
     hola(); // this is a violation of the partial order
     chau();

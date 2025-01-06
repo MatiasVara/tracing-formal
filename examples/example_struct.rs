@@ -4,18 +4,18 @@ use tracing_formal::TracingFormal;
 
 #[derive(Debug)]
 struct MyType {
-   name: &'static str,
+    name: &'static str,
 }
 
-// impl a type and define events 
+// impl a type and define events
 impl MyType {
     #[instrument(fields(event = "do_hola"))]
     pub fn hola(&self) {
-         println!("hola from {}", self.name);
+        println!("hola from {}", self.name);
     }
 
     #[instrument(fields(event = "do_chau"))]
-    pub fn chau(&self){
+    pub fn chau(&self) {
         println!("chau from {}", self.name);
     }
 }
@@ -30,7 +30,7 @@ fn main() {
     tracing::subscriber::set_global_default(subscriber).expect("Failed to set subscriber");
 
     let test = MyType {
-        name: "MyTypeInstance"
+        name: "MyTypeInstance",
     };
 
     /* TODO: to support different instances
@@ -38,10 +38,10 @@ fn main() {
         name: "MyTypeInstance2"
     };
     */
-    
+
     test.hola();
 
     test.chau();
-    // the following line triggers a violation 
+    // the following line triggers a violation
     test.chau();
 }
